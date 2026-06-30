@@ -1,5 +1,4 @@
-const API_KEY = "ISI_API_TMDB_KAMU";
-const BASE = "https://api.themoviedb.org/3";
+const BASE = "https://vxz.megadon8787.workers.dev";
 const IMG = "https://image.tmdb.org/t/p/w500";
 
 /* MENU */
@@ -12,11 +11,16 @@ function goHome(){
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* FETCH DATA */
-async function fetchData(url){
-    const res = await fetch(url);
-    const data = await res.json();
-    return data.results;
+/* FETCH DATA (LEWAT WORKER) */
+async function fetchData(endpoint){
+    try{
+        const res = await fetch(`${BASE}${endpoint}`);
+        const data = await res.json();
+        return data.results || [];
+    }catch(e){
+        console.error("API ERROR:", e);
+        return [];
+    }
 }
 
 /* RENDER */
@@ -24,10 +28,15 @@ function render(data){
     const app = document.getElementById("app");
     app.innerHTML = "";
 
+    if(!data.length){
+        app.innerHTML = "<p>No data found</p>";
+        return;
+    }
+
     data.forEach(item => {
         app.innerHTML += `
             <div class="card">
-                <img src="${IMG + item.poster_path}">
+                <img src="${IMG + item.poster_path}" loading="lazy">
                 <h3>${item.title || item.name}</h3>
             </div>
         `;
@@ -36,17 +45,17 @@ function render(data){
 
 /* LOADERS */
 async function loadPopular(){
-    const data = await fetchData(`${BASE}/movie/popular?api_key=${API_KEY}`);
+    const data = await fetchData("/movie/popular");
     render(data);
 }
 
 async function loadTopRated(){
-    const data = await fetchData(`${BASE}/movie/top_rated?api_key=${API_KEY}`);
+    const data = await fetchData("/movie/top_rated");
     render(data);
 }
 
 async function loadTrending(){
-    const data = await fetchData(`${BASE}/trending/all/day?api_key=${API_KEY}`);
+    const data = await fetchData("/trending/all/day");
     render(data);
 }
 
@@ -56,7 +65,7 @@ async function searchMovie(){
 
     if(!q) return alert("Isi dulu!");
 
-    const data = await fetchData(`${BASE}/search/multi?api_key=${API_KEY}&query=${q}`);
+    const data = await fetchData(`/search/multi?query=${encodeURIComponent(q)}`);
     render(data);
 }
 
