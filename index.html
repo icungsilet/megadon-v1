@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ViralScreen</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo">ViralScreen</div>
+
+    <nav class="menu" id="menu">
+
+        <a onclick="goHome()">Home</a>
+
+        <div class="dropdown">
+            <a>Movies ▾</a>
+            <div class="dropdown-menu">
+                <a onclick="loadPopular()">Popular</a>
+                <a onclick="loadTopRated()">Top Rated</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <a>TV Shows ▾</a>
+            <div class="dropdown-menu">
+                <a onclick="loadTrending()">Trending</a>
+            </div>
+        </div>
+
+    </nav>
+
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+
+        <h1>ViralScreen</h1>
+
+        <!-- SEARCH -->
+        <div class="search-box">
+            <input id="searchInput" placeholder="Search movie...">
+            <button onclick="searchMovie()">Search</button>
+        </div>
+
+    </div>
+</section>
+
+<!-- MAIN APP -->
+<main id="app"></main>
+
+<script src="app.js"></script>
+
+</body>
+</html>
